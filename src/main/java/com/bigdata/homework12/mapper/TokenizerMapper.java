@@ -14,6 +14,14 @@ public class TokenizerMapper extends Mapper<LongWritable, Text, IntWritable, Req
     private static Logger logger = Logger.getLogger(TokenizerMapper.class.getName());
 
     @Override
+    protected void setup(Context context) throws IOException, InterruptedException {
+        context.getCounter(AverageBytesPerRequestJob.BrowsersCounter.MOZILLA).increment(0);
+        context.getCounter(AverageBytesPerRequestJob.BrowsersCounter.OPERA).increment(0);
+        context.getCounter(AverageBytesPerRequestJob.BrowsersCounter.IE).increment(0);
+        context.getCounter(AverageBytesPerRequestJob.BrowsersCounter.OTHER).increment(0);
+    }
+
+    @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         String[] lines = value.toString().split(" ");
         IntWritable key1;
