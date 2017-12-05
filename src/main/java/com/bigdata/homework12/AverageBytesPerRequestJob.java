@@ -7,6 +7,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.SequenceFile;
+import org.apache.hadoop.io.compress.SnappyCodec;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
@@ -34,13 +35,12 @@ public class AverageBytesPerRequestJob {
         }
         Job job = Job.getInstance(conf, "Average Bytes Per Request");
 
+        SequenceFileOutputFormat.setOutputCompressionType(job, SequenceFile.CompressionType.BLOCK);
+        SequenceFileOutputFormat.setOutputCompressorClass(job, SnappyCodec.class);
+
         job.setInputFormatClass(TextInputFormat.class);
-        job.setOutputFormatClass(TextOutputFormat.class);
-//        job.setOutputFormatClass(SequenceFileOutputFormat.class);
-//
-//        SequenceFileOutputFormat.setOutputCompressionType(job, SequenceFile.CompressionType.BLOCK);
-//        SequenceFileOutputFormat.setCompressOutput(job, true);
-//        conf.set("mapred.output.compression.codec","org.apache.hadoop.io.compress.SnappyCodec");
+
+        job.setOutputFormatClass(SequenceFileOutputFormat.class);
 
         job.setJarByClass(AverageBytesPerRequestJob.class);
 
