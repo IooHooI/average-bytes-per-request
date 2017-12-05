@@ -8,6 +8,7 @@ import org.apache.hadoop.io.Writable;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.Objects;
 
 public class RequestInfo implements Writable {
 
@@ -15,41 +16,19 @@ public class RequestInfo implements Writable {
 
     private LongWritable bytes;
 
-    private Text requestId;
-
-    private Text userAgent;
-
     public RequestInfo() {
         this.average = new FloatWritable();
         this.bytes = new LongWritable();
-        this.userAgent = new Text();
-        this.requestId = new Text();
         this.average.set(0);
         this.bytes.set(0);
-    }
-
-    public Text getRequestId() {
-        return requestId;
     }
 
     public LongWritable getBytes() {
         return bytes;
     }
 
-    public void setRequestId(String requestId) {
-        this.requestId.set(requestId);
-    }
-
     public void setBytes(Long bytes) {
         this.bytes.set(bytes);
-    }
-
-    public Text getUserAgent() {
-        return userAgent;
-    }
-
-    public void setUserAgent(String userAgent) {
-        this.userAgent.set(userAgent);
     }
 
     public FloatWritable getAverage() {
@@ -62,25 +41,19 @@ public class RequestInfo implements Writable {
 
     @Override
     public void write(DataOutput dataOutput) throws IOException {
-        requestId.write(dataOutput);
-        userAgent.write(dataOutput);
         bytes.write(dataOutput);
         average.write(dataOutput);
     }
 
     @Override
     public void readFields(DataInput dataInput) throws IOException {
-        requestId.readFields(dataInput);
-        userAgent.readFields(dataInput);
         bytes.readFields(dataInput);
         average.readFields(dataInput);
     }
 
     @Override
     public int hashCode() {
-        // This is used by HashPartitioner, so implement it as per need
-        // this one shall hash based on request id
-        return requestId.hashCode();
+        return Objects.hash(this.average, this.bytes);
     }
 
     @Override
@@ -90,10 +63,13 @@ public class RequestInfo implements Writable {
         } else {
             RequestInfo requestInfo = (RequestInfo)o;
             return
-                    this.requestId.equals(requestInfo.getRequestId()) &&
                     this.bytes.equals(requestInfo.getBytes()) &&
-                    this.userAgent.equals(requestInfo.getUserAgent()) &&
                     Math.abs(this.average.get() - requestInfo.getAverage().get()) < 0.00001;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "" + average + " " + bytes;
     }
 }

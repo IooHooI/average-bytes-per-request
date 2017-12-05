@@ -6,14 +6,23 @@ import com.bigdata.homework12.writable.RequestInfo;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.SequenceFile;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
 public class AverageBytesPerRequestJob {
+
+    public enum BrowsersCounter {
+        MOZILLA,
+        OPERA,
+        IE,
+        OTHER
+    }
 
     public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
@@ -27,12 +36,21 @@ public class AverageBytesPerRequestJob {
 
         job.setInputFormatClass(TextInputFormat.class);
         job.setOutputFormatClass(TextOutputFormat.class);
+//        job.setOutputFormatClass(SequenceFileOutputFormat.class);
+//
+//        SequenceFileOutputFormat.setOutputCompressionType(job, SequenceFile.CompressionType.BLOCK);
+//        SequenceFileOutputFormat.setCompressOutput(job, true);
+//        conf.set("mapred.output.compression.codec","org.apache.hadoop.io.compress.SnappyCodec");
+
         job.setJarByClass(AverageBytesPerRequestJob.class);
+
         job.setMapperClass(TokenizerMapper.class);
         job.setCombinerClass(AverageBytesPerRequestReducer.class);
         job.setReducerClass(AverageBytesPerRequestReducer.class);
+
         job.setMapOutputKeyClass(IntWritable.class);
         job.setMapOutputValueClass(RequestInfo.class);
+
         job.setOutputKeyClass(IntWritable.class);
         job.setOutputValueClass(RequestInfo.class);
 

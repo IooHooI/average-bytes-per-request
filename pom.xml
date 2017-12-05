@@ -32,6 +32,13 @@
             <artifactId>hadoop-common</artifactId>
             <version>${hadoop.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.xerial.snappy</groupId>
+            <artifactId>snappy-java</artifactId>
+            <version>1.1.7</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
         <!--INFRASTRUCTURE DEPENDENCIES-->
 
         <!--TEST DEPENDENCIES-->
@@ -70,7 +77,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.bigdata.homework11.Main</mainClass>
+                            <mainClass>com.bigdata.homework12.AverageBytesPerRequestJob</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

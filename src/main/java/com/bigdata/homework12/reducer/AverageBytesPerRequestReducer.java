@@ -12,7 +12,6 @@ public class AverageBytesPerRequestReducer extends Reducer<IntWritable, RequestI
         int size = 0;
         for (RequestInfo request: value) {
             size++;
-            requestInfo.setRequestId(request.getRequestId().toString());
             requestInfo.setBytes(requestInfo.getBytes().get() + request.getBytes().get());
             requestInfo.setAverage(requestInfo.getAverage().get() + request.getBytes().get());
         }

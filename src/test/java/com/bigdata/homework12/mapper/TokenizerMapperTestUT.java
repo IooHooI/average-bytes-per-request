@@ -20,10 +20,8 @@ public class TokenizerMapperTestUT {
     @Test
     public void testTokenizerMapper_Case_1() {
         RequestInfo requestInfo = new RequestInfo();
-        requestInfo.setRequestId("ip126");
         requestInfo.setBytes(38340L);
         requestInfo.setAverage(38340F);
-        requestInfo.setUserAgent("\"Mozilla/5.0");
         mapDriver.withInput(new LongWritable(1), new Text(
                 "ip126 - - [24/Apr/2011:11:38:43 -0400] \"GET /dec/multia/multia.gif HTTP/1.1\" 200 38340 \"http://host2/dec/multia/\" \"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:2.0.1) Gecko/20100101 Firefox/4.0.1\"\n"));
         mapDriver.withOutput(new IntWritable(126), requestInfo);

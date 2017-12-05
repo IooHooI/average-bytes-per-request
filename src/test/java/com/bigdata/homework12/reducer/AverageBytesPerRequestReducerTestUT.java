@@ -24,19 +24,16 @@ public class AverageBytesPerRequestReducerTestUT {
         RequestInfo requestInfo;
 
         requestInfo = new RequestInfo();
-        requestInfo.setRequestId("ip54325432");
         requestInfo.setBytes(1421L);
         requestInfo.setAverage(1421F);
         requests.add(requestInfo);
 
         requestInfo = new RequestInfo();
-        requestInfo.setRequestId("ip54325432");
         requestInfo.setBytes(3453L);
         requestInfo.setAverage(3453F);
         requests.add(requestInfo);
 
         RequestInfo result = new RequestInfo();
-        result.setRequestId("ip54325432");
         result.setBytes(1421L + 3453L);
         result.setAverage((1421L + 3453F)/2);
 
